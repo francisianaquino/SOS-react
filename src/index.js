@@ -4,7 +4,7 @@ import './index.css';
 
 function Square(props) {
     return (
-        <button className="square" onClick={props.onClick}>
+        <button className="square" onClick={props.onClick} style={{backgroundColor: props.fill}}>
             {props.value}
         </button>
     );
@@ -23,6 +23,7 @@ class Board extends Component {
         super(props);
         this.state = {
             squares: Array(18).fill(null).map(x => Array(18).fill(null)),
+            color: Array(18).fill('').map(x => Array(18).fill('')),
             isLetterS: true,
             isPlayerOne: true,
             playerOneScore: 0,
@@ -47,6 +48,7 @@ class Board extends Component {
         return (
             <Square
                 value={this.state.squares[i][j]}
+                fill={this.state.color[i][j]}
                 onClick={() => this.handleSquareClick(i, j)}
             />
         );
@@ -94,6 +96,15 @@ class Board extends Component {
                 if (pattern === 'SOS') {
                     currentScore += 1;
                     scoreIncremented = true;
+
+                    const fill = this.state.color;
+                    fill[rowA][columnA] = 'red';
+                    fill[rowB][columnB] = 'red';
+                    fill[rowC][columnC] = 'red';
+
+                    this.setState({
+                        color: fill
+                    })
                 }
             }
         }
